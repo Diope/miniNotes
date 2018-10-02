@@ -1,6 +1,6 @@
 const electron = require('electron');
 const path = require('path');
-const {app, Tray, ipcMain, BrowserWindow} = require('electron');
+const {app, Tray, ipcMain, BrowserWindow, Menu} = require('electron');
 
 let mainWindow;
 let menuTrayIcon;
@@ -36,8 +36,21 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:3000')
   }
 
+  let quitMenu = Menu.buildFromTemplate([
+    {label: 'Quit', accelerator: 'Command+Q', selector: 'terminate:'}
+  ])
+
   menuTrayIcon = new Tray(ICON)
   menuTrayIcon.setToolTip('Mini-Notes');
+
+  menuTrayIcon.on('click', (event, bounds, position) => {
+    const {screen} = electron; //Needed to get cursor position
+    if (mainWindow.isVisible()) mainWindow.hide()
+  })
+
+  
+
+  menuTrayIcon.setContextMenu(quitMenu)
 }
 
 app.on('ready', createWindow);
