@@ -1,5 +1,9 @@
 {
   "name": "wasurenai",
+  "author": {
+    "name": "Dion Pettaway",
+    "url": "http://dipet.me"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,6 +12,7 @@
     "react-scripts": "2.0.3"
   },
   "scripts": {
+    "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -21,5 +26,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "concurrently": "4.0.1",
+    "electron": "3.0.2",
+    "wait-on": "2.1.0"
+  }
 }
