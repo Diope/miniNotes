@@ -29,3 +29,9 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:3000')
   }
 }
+
+app.on('ready', createWindow);
+
+app.on('activate', () => {
+  if (mainWindow === null) createWindow()
+})
