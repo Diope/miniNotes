@@ -6,7 +6,8 @@ let mainWindow;
 let menuTrayIcon;
 
 const NOTES = []
-const WIDTH = 575;
+var visible = false;
+const WIDTH = 400;
 const HEIGHT = 650;
 const MAX_CHARACTERS = 45;
 const IMAGE = 'icon@2x.png'
@@ -23,7 +24,7 @@ function createWindow() {
     height: HEIGHT,
     show: false,
     frame: false,
-    transparent: true
+    transparent: false
   });
 
   if (process.env.NODE_ENV === 'production') {
@@ -42,19 +43,48 @@ function createWindow() {
 
   menuTrayIcon = new Tray(ICON)
   menuTrayIcon.setToolTip('Mini-Notes');
+  // menuTrayIcon.setContextMenu(quitMenu);
 
   menuTrayIcon.on('click', (event, bounds, position) => {
-    const {screen} = electron; //Needed to get cursor position
-    if (mainWindow.isVisible()) mainWindow.hide()
+    const {screen} = electron; //Needed to get cursor position?
+    // if (mainWindow.isVisible()) mainWindow.hide()
+
+    mainWindow.webContents.send('open', bounds)
+    const cursor = screen.getCursorScreenPoint();
+    const primary = screen.getPrimaryDisplay().workAreaSize;
+
+    mainWindow.setPosition(cursor.x, cursor.y);
+    mainWindow.show();
+    
+    console.log("test", bounds, position, cursor, primary);
+  });
+
+  mainWindow.on('blur', () => {
+    visible = false;
+
+    mainWindow.hide()
   })
 
-  
+  mainWindow.on('show', () => {
+    
+    menuTrayIcon.setToolTip('test')
+  })
 
-  menuTrayIcon.setContextMenu(quitMenu)
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  })
+
+  ipcMain.on('notes', (event, data = []) => {
+    NOTES = data;
+  })
 }
 
 app.on('ready', createWindow);
 
 app.on('activate', () => {
   if (mainWindow === null) createWindow()
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
 })
