@@ -1,5 +1,5 @@
 {
-  "name": "wasurenai",
+  "name": "miniNote",
   "author": {
     "name": "Dion Pettaway",
     "url": "http://dipet.me"
@@ -10,7 +10,8 @@
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "2.0.3"
+    "react-scripts": "2.0.3",
+    "react-simplemde-editor": "3.6.16"
   },
   "scripts": {
     "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",

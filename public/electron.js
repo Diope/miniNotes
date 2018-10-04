@@ -7,8 +7,8 @@ let menuTrayIcon;
 
 const NOTES = []
 var visible = false;
-const WIDTH = 400;
-const HEIGHT = 650;
+const WIDTH = 500;
+const HEIGHT = 500;
 const MAX_CHARACTERS = 45;
 const IMAGE = 'icon@2x.png'
 const IMAGE_PATH = path.join(__dirname, '../assets/images')
@@ -27,22 +27,11 @@ function createWindow() {
     transparent: false
   });
 
-  if (process.env.NODE_ENV === 'production') {
-    mainWindow.loadURL(url.format({
-      pathname: path.join(__dirname, '../build/index.html'),
-      protocol: 'file:',
-      slashes: true
-    }))
-  } else {
-    mainWindow.loadURL('http://localhost:3000')
-  }
-
-  let quitMenu = Menu.buildFromTemplate([
-    {label: 'Quit', accelerator: 'Command+Q', selector: 'terminate:'}
-  ])
+  
+  mainWindow.loadURL('http://localhost:3000')
 
   menuTrayIcon = new Tray(ICON)
-  menuTrayIcon.setToolTip('Mini-Notes');
+  menuTrayIcon.setToolTip('Mini-Note');
   // menuTrayIcon.setContextMenu(quitMenu);
 
   menuTrayIcon.on('click', (event, bounds, position) => {
@@ -58,6 +47,8 @@ function createWindow() {
     
     console.log("test", bounds, position, cursor, primary);
   });
+
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('blur', () => {
     visible = false;
@@ -88,3 +79,18 @@ app.on('activate', () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 })
+
+function appTitle (title = "") {
+  const t = title
+  const titleCount = t.length;
+  const icon = menuTrayIcon.setImage(ICON);
+
+  if (titleCount >= MAX_CHARACTERS) {
+    t = t.slice(0, MAX_CHARACTERS - 1) + "…"
+  } else {
+    t = t.padEnd(MAX_CHARACTERS - titleCount, ' ');
+  }
+
+  menuTrayIcon.appTitle(t);
+  menuTrayIcon.setToolTip(title);
+}
