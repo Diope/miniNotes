@@ -29,7 +29,8 @@ class InputField extends Component {
               spellChecker: false,
               forceSync: true,
               status: false,
-              toolbar: false
+              toolbar: false,
+              codeSyntaxHighlighting: true
             }}
 
           />

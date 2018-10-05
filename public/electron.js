@@ -8,12 +8,19 @@ let menuTrayIcon;
 const NOTES = []
 var visible = false;
 const WIDTH = 500;
-const HEIGHT = 500;
+const HEIGHT = 300;
 const MAX_CHARACTERS = 45;
 const IMAGE = 'icon@2x.png'
 const IMAGE_PATH = path.join(__dirname, '../assets/images')
 
-const ICON = path.join(IMAGE_PATH, IMAGE)
+const ICON = path.join(IMAGE_PATH, IMAGE);
+const rightMenu = [
+  {
+    label: 'Quit',
+    click: () => app.quit()
+  }
+]
+const menu = Menu.buildFromTemplate(rightMenu)
 
 function createWindow() {
   
@@ -26,17 +33,20 @@ function createWindow() {
     frame: false,
     transparent: false
   });
-
-  
   mainWindow.loadURL('http://localhost:3000')
 
   menuTrayIcon = new Tray(ICON)
   menuTrayIcon.setToolTip('Mini-Note');
-  // menuTrayIcon.setContextMenu(quitMenu);
+  menuTrayIcon.on('right-click', (menuTrayIcon) => {
+    menuTrayIcon.popUpContextMenu(menu)
+ })
+
 
   menuTrayIcon.on('click', (event, bounds, position) => {
+    const {x, y} = bounds;
+    const {height, width} = mainWindow.getBounds()
     const {screen} = electron; //Needed to get cursor position?
-    // if (mainWindow.isVisible()) mainWindow.hide()
+    if (mainWindow.isVisible()) mainWindow.hide()
 
     mainWindow.webContents.send('open', bounds)
     const cursor = screen.getCursorScreenPoint();
@@ -47,26 +57,22 @@ function createWindow() {
     
     console.log("test", bounds, position, cursor, primary);
   });
+  menuTrayIcon.on('right-click', () => {
+    
+  })
 
   mainWindow.webContents.openDevTools();
 
   mainWindow.on('blur', () => {
-    visible = false;
-
     mainWindow.hide()
   })
 
   mainWindow.on('show', () => {
-    
-    menuTrayIcon.setToolTip('test')
+    menuTrayIcon.setToolTip('miniNote')
   })
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-  })
-
-  ipcMain.on('notes', (event, data = []) => {
-    NOTES = data;
   })
 }
 
@@ -79,18 +85,3 @@ app.on('activate', () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 })
-
-function appTitle (title = "") {
-  const t = title
-  const titleCount = t.length;
-  const icon = menuTrayIcon.setImage(ICON);
-
-  if (titleCount >= MAX_CHARACTERS) {
-    t = t.slice(0, MAX_CHARACTERS - 1) + "…"
-  } else {
-    t = t.padEnd(MAX_CHARACTERS - titleCount, ' ');
-  }
-
-  menuTrayIcon.appTitle(t);
-  menuTrayIcon.setToolTip(title);
-}
