@@ -1,12 +1,11 @@
 * {
-  font-size: 18px;
+  font-size: 14px;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: antialiased;
   box-sizing: border-box;
 }
 
@@ -20,9 +19,33 @@
   border-right: 10px solid transparent;
 }
 
-/* .notes-field {
-  padding: 10px;
-  font-size: 1.6rem;
-} */
+.notes-field {
+  position: relative;
+}
 
+.CodeMirror 
+.CodeMirror-code 
+.cm-header-1{font-size:135%;line-height:115% !important}
+
+.CodeMirror 
+.CodeMirror-code 
+.cm-header-2{font-size:125%;line-height:125% !important}
+
+.CodeMirror 
+.CodeMirror-code 
+.cm-header-3{font-size:115%;line-height:115% !important}
+
+.CodeMirror 
+.CodeMirror-code 
+.cm-header-4{font-size:105%;line-height:105% !important}
+
+::-moz-selection { /* Code for Firefox */
+  color: rgb(26, 26, 26); 
+  background: rgb(19, 252, 163) !important;
+}
+
+::selection {
+  color: rgb(26, 26, 26); 
+  background: rgb(19, 252, 163) !important;
+}
 

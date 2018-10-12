@@ -2,12 +2,14 @@
 
 # dependencies
 /node_modules
+/dist
 
 # testing
 /coverage
 
 # production
 /build
+/electron
 
 # misc
 .DS_Store

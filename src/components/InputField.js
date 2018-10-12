@@ -10,7 +10,7 @@ class InputField extends Component {
     this.handleTextField = this.handleTextField.bind(this)
   }
 
-  state = { text: "Test here is some default text to see where it renders" }
+  state = { text: "" }
 
   handleTextField (value) {
     this.setState({text: value})

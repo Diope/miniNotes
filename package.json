@@ -1,12 +1,15 @@
 {
-  "name": "miniNote",
+  "name": "mininote",
+  "description": "A small note/scratchpad app that sits in your toolbar. Complete with basic text editing features (bold/italics/h1-h4 headings).",
   "author": {
     "name": "Dion Pettaway",
     "url": "http://dipet.me"
   },
+  "license": "CC0-1.0",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron.js",
+  "homepage": "./",
+  "main": "./electron/main.js",
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -14,7 +17,10 @@
     "react-simplemde-editor": "3.6.16"
   },
   "scripts": {
-    "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "build -c.extraMetadata.main=electron/main.js",
+    "dev": "nf start",
+    "electron": "electron .",
+    "elecbuild": "yarn build && node_modules/.bin/build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -30,8 +36,43 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "concurrently": "4.0.1",
     "electron": "3.0.2",
-    "wait-on": "2.1.0"
+    "electron-builder": "20.28.4",
+    "electron-prebuilt-compile": "3.0.0",
+    "foreman": "3.0.1",
+    "fsevents": "1.2.4"
+  },
+  "build": {
+    "productName": "mininote",
+    "appId": "com.dipet.mininote",
+   
+    "extends": null,
+    "electronVersion": "3.0.2",
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "assets/**/*"
+    ],
+    "mac": {
+      "category":"public.app-category.utilities",
+      "icon": "./build/icon@2x.png"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 300,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }
