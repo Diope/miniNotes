@@ -1,4 +1,4 @@
-#Mininote
+# Mininote
 
 ![wow much notes, amaze image!](mininote.png)
 
